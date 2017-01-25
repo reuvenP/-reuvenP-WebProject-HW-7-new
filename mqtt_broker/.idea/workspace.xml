@@ -24,8 +24,8 @@
       <file leaf-file-name="brocker.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/brocker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+            <state relative-caret-position="168">
+              <caret line="21" column="21" lean-forward="true" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
               <folding>
                 <element signature="e#0#43#0" expanded="false" />
               </folding>
@@ -105,6 +105,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunManager" selected="Node.js.brocker.js">
     <configuration default="false" name="brocker.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="brocker.js" working-dir="$PROJECT_DIR$">
@@ -182,7 +183,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1485351421197</updated>
-      <workItem from="1485351422614" duration="1755000" />
+      <workItem from="1485351422614" duration="3190000" />
     </task>
     <task id="LOCAL-00001" summary="add brocker">
       <created>1485351799874</created>
@@ -198,11 +199,18 @@
       <option name="project" value="LOCAL" />
       <updated>1485352141040</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="broker works">
+      <created>1485365448754</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1485365448754</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1755000" />
+    <option name="totallyTimeSpent" value="3190000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="738" extended-state="0" />
@@ -235,7 +243,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add brocker" />
     <MESSAGE value="install npm pkg" />
-    <option name="LAST_COMMIT_MESSAGE" value="install npm pkg" />
+    <MESSAGE value="broker works" />
+    <option name="LAST_COMMIT_MESSAGE" value="broker works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -252,8 +261,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/brocker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+        <state relative-caret-position="168">
+          <caret line="21" column="21" lean-forward="true" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
           <folding>
             <element signature="e#0#43#0" expanded="false" />
           </folding>

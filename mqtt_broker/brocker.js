@@ -16,7 +16,13 @@ var settings = {
     persistence: {
         factory: mosca.persistence.Mongo,
         url: 'mongodb://localhost:27017/ex7mqtt_brocker'
+    },
+    http: {
+        port: 3000,
+        bundle: true,
+        static: './'
     }
 };
 
 var server = new mosca.Server(settings);
+
