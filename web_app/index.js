@@ -1,11 +1,82 @@
 /**
  * Created by reuvenp on 1/25/2017.
  */
+var express = require('express');
+var app = express();
+var mongo = require('mongoose');
+var mqtt = require('mqtt');
+mongo.Promise = global.Promise;
+var Schema = mongo.Schema;
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var db = mongo.connect('mongodb://localhost:27017/ex7_web_app');
+var User = require('./model/user_schema');
+var Group = require('./model/group_schema');
+var port = 3001;
 
 
+app.use(cookieParser());
+var client = mqtt.connect('mqtt://localhost:1883',
+    {
+        clientId: 'server_' + port.toString(),
+        clean: false
+    });
+client.on('connect', function () {
+    client.subscribe('control');
+});
 
 
+app.get('/', function (req, res) {
+    var userID = req.cookies['userID'];
+    if (userID)
+    {
+        globalUserName = userID;
+        res.sendFile(__dirname + '/public/index.html');
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+});
 
+app.get('/login', function (req, res) {
+    var userID = req.cookies['userID'];
+    if (userID)
+    {
+        res.redirect('/');
+    }
+    else
+    {
+        res.sendFile(__dirname + '/public/login.html');
+    }
+});
+
+app.get('/loginRest', function (req, res) {
+    var username = req.query.username;
+    User.findOne({username: username}, function (err, user) {
+        if (err) throw err;
+        if (user == null)
+        {
+            var newUser = new User({
+               username: username,
+                isConnected: false,
+                groups: []
+            });
+            newUser.save(function (err) {
+                if (err) throw err;
+                res.cookie('userID', username);
+                res.send();
+            });
+        }
+        else
+        {
+            res.cookie('userID', username);
+            res.send();
+        }
+    });
+});
+
+app.listen(port);
 
 
 //for debugging mqtt broker

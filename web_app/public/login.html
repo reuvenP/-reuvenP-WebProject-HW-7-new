@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <form class="form-horizontal" action=''>
+                <fieldset>
+                    <div id="legend">
+                        <legend class="">Login</legend>
+                    </div>
+                    <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Username</label>
+                        <div class="controls">
+                            <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Button -->
+                        <br/>
+                        <div class="controls">
+                            <button class="btn btn-success">Login</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('form').submit(function(){
+        $.get("loginRest?username=" + $('#username').val(), function (data, status) {
+            window.location = '/';
+        });
+        return false;
+    });
+</script>
+</body>
+</html>
