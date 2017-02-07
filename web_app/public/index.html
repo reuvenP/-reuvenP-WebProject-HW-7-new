@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <div id="header">
@@ -26,6 +27,70 @@
         </div>
     </div>
 </div>
+<div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul id="chat_menu" class="nav sidebar-nav">
+            <li class="sidebar-brand">
+                <a>
+                    My Groups
+                </a>
+            </li>
+            <li>
+                <a href="#">Global</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="chat_window">
+                        <div class="top_menu">
+                            <div class="buttons">
+                                <div class="button close"></div>
+                                <div class="button minimize"></div>
+                                <div class="button maximize"></div>
+                            </div>
+                            <div class="title">Chat</div>
+                        </div>
+                        <ul class="messages"></ul>
+                        <div class="bottom_wrapper clearfix">
+                            <div class="message_input_wrapper"><input class="message_input" placeholder="Type your message here..." /></div>
+                            <div class="send_message">
+                                <div class="icon"></div>
+                                <div class="text">Send</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message_template">
+                        <li class="message">
+                            <div class="avatar"></div>
+                            <div class="text_wrapper">
+                                <div class="text"></div>
+                            </div>
+                        </li>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
 <script>
     function logout() {
         document.cookie = 'userID' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
@@ -33,6 +98,44 @@
     }
 </script>
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var trigger = $('.hamburger'),
+            overlay = $('.overlay'),
+            isClosed = false;
+
+        trigger.click(function () {
+            hamburger_cross();
+        });
+
+        function hamburger_cross() {
+
+            if (isClosed == true) {
+                overlay.hide();
+                trigger.removeClass('is-open');
+                trigger.addClass('is-closed');
+                isClosed = false;
+            } else {
+                overlay.show();
+                trigger.removeClass('is-closed');
+                trigger.addClass('is-open');
+                isClosed = true;
+            }
+        }
+
+        $('[data-toggle="offcanvas"]').click(function () {
+            $('#wrapper').toggleClass('toggled');
+        });
+
+        $.get('/getGroups', function (data) {
+            var groups = data.groups;
+            for (var i = 0; i < groups.length; i++) {
+                $('#chat_menu').append('<li><a href="#">' + groups[i] + '</a></li>');
+            }
+        });
+    });
+</script>
 <script>
     function getCookie(name) {
         var value = "; " + document.cookie;
@@ -44,6 +147,70 @@
             clientId: getCookie('userID'),
             clean: false
         });
+    function sendMsgMqtt(topic, msg) {
+        client.publish(topic, msg);
+    }
+
+    (function () {
+        var Message;
+        Message = function (arg) {
+            this.text = arg.text, this.message_side = arg.message_side;
+            this.draw = function (_this) {
+                return function () {
+                    var $message;
+                    $message = $($('.message_template').clone().html());
+                    $message.addClass(_this.message_side).find('.text').html(_this.text);
+                    $('.messages').append($message);
+                    return setTimeout(function () {
+                        return $message.addClass('appeared');
+                    }, 0);
+                };
+            }(this);
+            return this;
+        };
+        $(function () {
+            var getMessageText, message_side, sendMessage;
+            message_side = 'right';
+            getMessageText = function () {
+                var $message_input;
+                $message_input = $('.message_input');
+                return $message_input.val();
+            };
+            sendMessage = function (text) {
+                var $messages, message;
+                if (text.trim() === '') {
+                    return;
+                }
+                $('.message_input').val('');
+                $messages = $('.messages');
+                message_side = 'right';
+                //message_side = message_side === 'left' ? 'right' : 'left';
+                message = new Message({
+                    text: text,
+                    message_side: message_side
+                });
+                message.draw();
+                return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+            };
+            $('.send_message').click(function (e) {
+                sendMsgMqtt('global', getMessageText());
+                return sendMessage(getMessageText());
+            });
+            $('.message_input').keyup(function (e) {
+                if (e.which === 13) {
+                    sendMsgMqtt('global', getMessageText());
+                    return sendMessage(getMessageText());
+                }
+            });
+            /*sendMessage('Hello Philip! :)');
+            setTimeout(function () {
+                return sendMessage('Hi Sandy! How are you?');
+            }, 1000);
+            return setTimeout(function () {
+                return sendMessage('I\'m fine, thank you!');
+            }, 2000);*/
+        });
+    }.call(this));
 </script>
 </body>
 </html>

@@ -25,12 +25,23 @@ client.on('connect', function () {
     client.subscribe('control');
 });
 
+/*client.on('message', function(topic, payload) {
+    if (topic == 'control'){
+        var command = payload.cmds;
+        var properties = payload.prop;
+        switch (command){
+            case 'connect':
+
+        }
+    }
+});*/
+app.use(express.static('public'));
+
 
 app.get('/', function (req, res) {
     var userID = req.cookies['userID'];
     if (userID)
     {
-        globalUserName = userID;
         res.sendFile(__dirname + '/public/index.html');
     }
     else
@@ -48,6 +59,25 @@ app.get('/login', function (req, res) {
     else
     {
         res.sendFile(__dirname + '/public/login.html');
+    }
+});
+
+app.get('/getGroups', function (req, res) {
+    var userID = req.cookies['userID'];
+    if (!userID) {
+        res.json({});
+    }
+    else {
+        User.findOne({username: userID}, function (err, user) {
+           if (err) throw err;
+           if (user == null) {
+               res.json({});
+           }
+           else {
+               var groups = user.groups;
+               res.json({groups: groups});
+           }
+        });
     }
 });
 
